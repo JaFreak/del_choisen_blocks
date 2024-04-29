@@ -1,4 +1,3 @@
-#Программа выбирает объекты около мультитекстов, ориентируясь на фактические границы мультитекста, зона выбора не зависит от поворота исходного объекта
 import SelectionSets_chek
 from SelectionSets_chek import selsetcheck
 import time
@@ -11,7 +10,7 @@ import math
 
 import numpy as np
 
-#app = pyacadcom.AutoCAD()
+
 
 app = win32com.client.Dispatch("AutoCAD.Application")
 
@@ -34,7 +33,7 @@ def inv_layer_create():
 inv_layer_create()
 
 selset = 'ssels'
-#selset2 = 'ssels2'
+
 selset3 = 'ssels3'
 selset4 = 'ssels4'
 
@@ -79,35 +78,20 @@ for i in sset:
 
 def del_choisen_blocks():
     selsetcheck()
-    offset = float(0.05)
     start = int(0)
     finish = int(2)
     while start < finish:
         try:
             FilterType = win32com.client.VARIANT(VT_ARRAY|VT_I2, [  -4, 0, 8, 2, 62, -4 ]) 
             FilterData = win32com.client.VARIANT(VT_ARRAY|VT_VARIANT, ['<AND', type_for_del, lay, name_for_del, baseColor, 'AND>'])       #выбор по типу и слою, определяемым по выбранному объекту
-            SELECT_ALL=5    #5 это код метода выбора для выбора всего
             selset2 = 'ssels2'
             sset = app.ActiveDocument.SelectionSets.Add (selset2)
             sset.Select(5,None,None,FilterType,FilterData)
-            #print("выбрано объектов:", sset.Count)
             f = sets.Item(selset2).Count
             finish = int(f)
             print ('finish',finish, 'f', f)
-            for i in enumerate((sets.Item(selset2))):       #<-!!!! здесь я ввел enumerate, поэтому i теперь i[0,1], значит вместо 'i.' пишем 'i[1].'
-                #if i[1].TextString.is_decimal():
-                #print('выбрано объектов:', sset.Count,'type-',i[1].EntityType,'layer-',i[1].Layer,'содержимое-',i[1].TextString,'color-',i[1].Color)
-                #otm = float(i[1].TextString)
-                #i[1].Layer = '0_временный'
-                ang = i[1].Rotation
-                cosA = math.cos(ang)            
-                cos = np.round(cosA, 3)
-                sinA = math.sin(ang)
-                sin = np.round(sinA, 3)
-                sinMin = sin * -1
-                s = 1.1     #коэфициент масштабирования, как ни странно это значение должно отодвигать рамку наружу
-                m = float(0.05)
-                n = float(0.05)
+            for i in enumerate((sets.Item(selset2))):
+                s = 1.1     #коэфициент масштабирования
                 gb = i[1].GetBoundingBox()
                 fcp2 = gb[1]
                 fcp4 = gb[0]
@@ -115,14 +99,12 @@ def del_choisen_blocks():
                 fcp3 = (fcp2[0],fcp4[1],0)
                 centr = i[1].InsertionPoint
                 centrx = centr[0]
-                #print('centrx', centrx)
                 centry = centr[1]
                 centrMinx = centrx * -1
-                #print('centry',centry)
                 centrMiny = centry * -1
                 #вверх-влево                   
-                ucp1x0 = fcp1[0]#-offset
-                ucp1y0 = fcp1[1]#+offset
+                ucp1x0 = fcp1[0]
+                ucp1y0 = fcp1[1]
                 cpm1_0 = np.array([[ucp1x0,ucp1y0,1]])
                 cpm1_1 = np.array([[1,0,0],[0,1,0],[centrMinx,centrMiny,1]])
                 cpm1_2 = np.array([[s,0,0],[0,s,0],[0,0,1]])
@@ -134,10 +116,9 @@ def del_choisen_blocks():
                 ucp1x = cpm1[0]
                 ucp1y = cpm1[1]
                 cp1 = [ucp1x,ucp1y,0]
-                #print ('cp1',cp1)
                 #вверх-вправо                   
-                ucp2x0 = fcp2[0]#+offset
-                ucp2y0 = fcp2[1]#+offset
+                ucp2x0 = fcp2[0]
+                ucp2y0 = fcp2[1]
                 cpm2_0 = np.array([[ucp2x0,ucp2y0,1]])
                 cpm2_1 = np.array([[1,0,0],[0,1,0],[centrMinx,centrMiny,1]])
                 cpm2_2 = np.array([[s,0,0],[0,s,0],[0,0,1]])
@@ -150,8 +131,8 @@ def del_choisen_blocks():
                 ucp2y = cpm2[1]
                 cp2 = [ucp2x,ucp2y,0]
                 #вниз-вправо  
-                ucp3x0 = fcp3[0]#+offset
-                ucp3y0 = fcp3[1]#-offset
+                ucp3x0 = fcp3[0]
+                ucp3y0 = fcp3[1]
                 cpm3_0 = np.array([[ucp3x0,ucp3y0,1]])
                 cpm3_1 = np.array([[1,0,0],[0,1,0],[centrMinx,centrMiny,1]])
                 cpm3_2 = np.array([[s,0,0],[0,s,0],[0,0,1]])
@@ -163,10 +144,9 @@ def del_choisen_blocks():
                 ucp3x = cpm3[0]
                 ucp3y = cpm3[1]
                 cp3 = [ucp3x,ucp3y,0]
-                #print ('cp3',cp3)
                 #вниз-влево  
-                ucp4x0 = fcp4[0]#-offset
-                ucp4y0 = fcp4[1]#-offset
+                ucp4x0 = fcp4[0]
+                ucp4y0 = fcp4[1]
                 cpm4_0 = np.array([[ucp4x0,ucp4y0,1]])
                 cpm4_1 = np.array([[1,0,0],[0,1,0],[centrMinx,centrMiny,1]])
                 cpm4_2 = np.array([[s,0,0],[0,s,0],[0,0,1]])
@@ -178,10 +158,10 @@ def del_choisen_blocks():
                 ucp4x = cpm4[0]
                 ucp4y = cpm4[1]
                 cp4 = [ucp4x,ucp4y,0]
-                #print ('cp4',cp4)
+
                 pl = cp1+cp2+cp3+cp4
                 plist = win32com.client.VARIANT(VT_ARRAY | VT_R8,pl)
-                #modelsp.Add3Dpoly(plist)
+
                 sset3 = app.ActiveDocument.SelectionSets.Add (selset3)
                 FilterType2 = win32com.client.VARIANT(VT_ARRAY|VT_I2, [ -4, -4, 0, 8, 2, 62, -4, -4 ]) 
                 FilterData2 = win32com.client.VARIANT(VT_ARRAY|VT_VARIANT, ['<NOT', '<AND', type_for_del, lay, name_for_del, baseColor, 'AND>','NOT>' ])
@@ -236,7 +216,6 @@ def inv_layer_empty():
     selsetcheck()
     FilterTypeDelInv = win32com.client.VARIANT(VT_ARRAY|VT_I2, [ 8 ]) 
     FilterDataDelInv = win32com.client.VARIANT(VT_ARRAY|VT_VARIANT, ['0_невидимый']) 
-    SELECT_ALL=5
     selsetDelInv = 'sselsDelInv'
     try:
         ssetDelInv = app.ActiveDocument.SelectionSets.Add (selsetDelInv)
@@ -266,9 +245,6 @@ def inv_layer_del():
 del_choisen_blocks ()
 print ('del_intersectable_blocks - DONE!')
 
-#selsetcheck()
-#inv_layer_empty()
-#inv_layer_del()
 time.sleep(1)
 
 
