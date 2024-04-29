@@ -22,7 +22,6 @@ layers = doc.Layers
 def inv_layer_create():
     try:
         layers.Add('0_невидимый')
-        layerInv = layers.Item('0_невидимый')
         layers.Item('0_невидимый').LayerOn = False
     except:
         pass
@@ -174,7 +173,6 @@ selsetcheck()
 inv_layer_create()
 
 selset = 'ssels'
-
 selset3 = 'ssels3'
 selset4 = 'ssels4'
 
