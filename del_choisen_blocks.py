@@ -30,6 +30,22 @@ def inv_layer_create():
     except:
         pass
 
+def cpi (fcp, centrMinx, centrMiny, s, centrx, centry,):
+    ucpx0 = fcp[0]
+    ucpy0 = fcp[1]
+    cpm1_0 = np.array([[ucpx0,ucpy0,1]])
+    cpm1_1 = np.array([[1,0,0],[0,1,0],[centrMinx,centrMiny,1]])
+    cpm1_2 = np.array([[s,0,0],[0,s,0],[0,0,1]])
+    cpm1_3 = np.array([[1,0,0],[0,1,0],[centrx,centry,1]])
+    cpm1_01 = np.dot(cpm1_0, cpm1_1)
+    cpm1_12 = np.dot(cpm1_01, cpm1_2)
+    cpm1_23 = np.dot(cpm1_12, cpm1_3)
+    cpm1 = list(cpm1_23[0,:])
+    ucpx = cpm1[0]
+    ucpy = cpm1[1]
+    cpi = [ucpx,ucpy,0]
+    return [cpi]
+
 inv_layer_create()
 
 selset = 'ssels'
@@ -102,62 +118,66 @@ def del_choisen_blocks():
                 centry = centr[1]
                 centrMinx = centrx * -1
                 centrMiny = centry * -1
-                #вверх-влево                   
-                ucp1x0 = fcp1[0]
-                ucp1y0 = fcp1[1]
-                cpm1_0 = np.array([[ucp1x0,ucp1y0,1]])
-                cpm1_1 = np.array([[1,0,0],[0,1,0],[centrMinx,centrMiny,1]])
-                cpm1_2 = np.array([[s,0,0],[0,s,0],[0,0,1]])
-                cpm1_3 = np.array([[1,0,0],[0,1,0],[centrx,centry,1]])
-                cpm1_01 = np.dot(cpm1_0, cpm1_1)
-                cpm1_12 = np.dot(cpm1_01, cpm1_2)
-                cpm1_23 = np.dot(cpm1_12, cpm1_3)
-                cpm1 = list(cpm1_23[0,:])
-                ucp1x = cpm1[0]
-                ucp1y = cpm1[1]
-                cp1 = [ucp1x,ucp1y,0]
-                #вверх-вправо                   
-                ucp2x0 = fcp2[0]
-                ucp2y0 = fcp2[1]
-                cpm2_0 = np.array([[ucp2x0,ucp2y0,1]])
-                cpm2_1 = np.array([[1,0,0],[0,1,0],[centrMinx,centrMiny,1]])
-                cpm2_2 = np.array([[s,0,0],[0,s,0],[0,0,1]])
-                cpm2_3 = np.array([[1,0,0],[0,1,0],[centrx,centry,1]])
-                cpm2_01 = np.dot(cpm2_0, cpm2_1)
-                cpm2_12 = np.dot(cpm2_01, cpm2_2)
-                cpm2_23 = np.dot(cpm2_12, cpm2_3)
-                cpm2 = list(cpm2_23[0,:])
-                ucp2x = cpm2[0]
-                ucp2y = cpm2[1]
-                cp2 = [ucp2x,ucp2y,0]
+                #вверх-влево     
+                cp1 = cpi (fcp1, centrMinx, centrMiny, s, centrx, centry,)              
+                #ucp1x0 = fcp1[0]
+                #ucp1y0 = fcp1[1]
+                #cpm1_0 = np.array([[ucp1x0,ucp1y0,1]])
+                #cpm1_1 = np.array([[1,0,0],[0,1,0],[centrMinx,centrMiny,1]])
+                #cpm1_2 = np.array([[s,0,0],[0,s,0],[0,0,1]])
+                #cpm1_3 = np.array([[1,0,0],[0,1,0],[centrx,centry,1]])
+                #cpm1_01 = np.dot(cpm1_0, cpm1_1)
+                #cpm1_12 = np.dot(cpm1_01, cpm1_2)
+                #cpm1_23 = np.dot(cpm1_12, cpm1_3)
+                #cpm1 = list(cpm1_23[0,:])
+                #ucp1x = cpm1[0]
+                #ucp1y = cpm1[1]
+                #cp1 = [ucp1x,ucp1y,0]
+                #вверх-вправо    
+                cp2 = cpi (fcp2, centrMinx, centrMiny, s, centrx, centry,)               
+                #ucp2x0 = fcp2[0]
+                #ucp2y0 = fcp2[1]
+                #cpm2_0 = np.array([[ucp2x0,ucp2y0,1]])
+                #cpm2_1 = np.array([[1,0,0],[0,1,0],[centrMinx,centrMiny,1]])
+                #cpm2_2 = np.array([[s,0,0],[0,s,0],[0,0,1]])
+                #cpm2_3 = np.array([[1,0,0],[0,1,0],[centrx,centry,1]])
+                #cpm2_01 = np.dot(cpm2_0, cpm2_1)
+                #cpm2_12 = np.dot(cpm2_01, cpm2_2)
+                #cpm2_23 = np.dot(cpm2_12, cpm2_3)
+                #cpm2 = list(cpm2_23[0,:])
+                #ucp2x = cpm2[0]
+                #ucp2y = cpm2[1]
+                #cp2 = [ucp2x,ucp2y,0]
                 #вниз-вправо  
-                ucp3x0 = fcp3[0]
-                ucp3y0 = fcp3[1]
-                cpm3_0 = np.array([[ucp3x0,ucp3y0,1]])
-                cpm3_1 = np.array([[1,0,0],[0,1,0],[centrMinx,centrMiny,1]])
-                cpm3_2 = np.array([[s,0,0],[0,s,0],[0,0,1]])
-                cpm3_3 = np.array([[1,0,0],[0,1,0],[centrx,centry,1]])
-                cpm3_01 = np.dot(cpm3_0, cpm3_1)
-                cpm3_12 = np.dot(cpm3_01, cpm3_2)
-                cpm3_23 = np.dot(cpm3_12, cpm3_3)
-                cpm3 = list(cpm3_23[0,:])
-                ucp3x = cpm3[0]
-                ucp3y = cpm3[1]
-                cp3 = [ucp3x,ucp3y,0]
+                cp3 = cpi (fcp3, centrMinx, centrMiny, s, centrx, centry,)
+                #ucp3x0 = fcp3[0]
+                #ucp3y0 = fcp3[1]
+                #cpm3_0 = np.array([[ucp3x0,ucp3y0,1]])
+                #cpm3_1 = np.array([[1,0,0],[0,1,0],[centrMinx,centrMiny,1]])
+                #cpm3_2 = np.array([[s,0,0],[0,s,0],[0,0,1]])
+                #cpm3_3 = np.array([[1,0,0],[0,1,0],[centrx,centry,1]])
+                #cpm3_01 = np.dot(cpm3_0, cpm3_1)
+                #cpm3_12 = np.dot(cpm3_01, cpm3_2)
+                #cpm3_23 = np.dot(cpm3_12, cpm3_3)
+                #cpm3 = list(cpm3_23[0,:])
+                #ucp3x = cpm3[0]
+                #ucp3y = cpm3[1]
+                #cp3 = [ucp3x,ucp3y,0]
                 #вниз-влево  
-                ucp4x0 = fcp4[0]
-                ucp4y0 = fcp4[1]
-                cpm4_0 = np.array([[ucp4x0,ucp4y0,1]])
-                cpm4_1 = np.array([[1,0,0],[0,1,0],[centrMinx,centrMiny,1]])
-                cpm4_2 = np.array([[s,0,0],[0,s,0],[0,0,1]])
-                cpm4_3 = np.array([[1,0,0],[0,1,0],[centrx,centry,1]])
-                cpm4_01 = np.dot(cpm4_0, cpm4_1)
-                cpm4_12 = np.dot(cpm4_01, cpm4_2)
-                cpm4_23 = np.dot(cpm4_12, cpm4_3)
-                cpm4 = list(cpm4_23[0,:])
-                ucp4x = cpm4[0]
-                ucp4y = cpm4[1]
-                cp4 = [ucp4x,ucp4y,0]
+                cp4 = cpi (fcp4, centrMinx, centrMiny, s, centrx, centry,)
+                #ucp4x0 = fcp4[0]
+                #ucp4y0 = fcp4[1]
+                #cpm4_0 = np.array([[ucp4x0,ucp4y0,1]])
+                #cpm4_1 = np.array([[1,0,0],[0,1,0],[centrMinx,centrMiny,1]])
+                #cpm4_2 = np.array([[s,0,0],[0,s,0],[0,0,1]])
+                #cpm4_3 = np.array([[1,0,0],[0,1,0],[centrx,centry,1]])
+                #cpm4_01 = np.dot(cpm4_0, cpm4_1)
+                #cpm4_12 = np.dot(cpm4_01, cpm4_2)
+                #cpm4_23 = np.dot(cpm4_12, cpm4_3)
+                #cpm4 = list(cpm4_23[0,:])
+                #ucp4x = cpm4[0]
+                #ucp4y = cpm4[1]
+                #cp4 = [ucp4x,ucp4y,0]
 
                 pl = cp1+cp2+cp3+cp4
                 plist = win32com.client.VARIANT(VT_ARRAY | VT_R8,pl)
