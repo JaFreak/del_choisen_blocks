@@ -204,7 +204,7 @@ for i in sset:
         name_for_del = 'None'
     elif entype == 21:
         type_for_del = 'Mtext'
-        name_for_del = None
+        name_for_del = 'None'
     elif entype == 32:
         type_for_del = 'Text'
         name_for_del = 'None' 
@@ -214,7 +214,7 @@ for i in sset:
     elif entype == 7:
         type_for_del = 'INSERT'
         name_for_del = i.Name
-    print (etype , lay, 'baseColor',baseColor,name_for_del)
+
 
 del_choisen_blocks ()
 print ('del_intersectable_blocks - DONE!')
